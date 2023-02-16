@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8">
+		<title th:text="${appName}"></title>
+		<style>
+			#resp {
+				display: flex;
+				flex-direction: column;
+			}
+			
+			#resp .edificio {
+				background-color: yellow;
+				margin: 0 0 1rem 0;
+				padding: 0.5rem;
+			}
+			
+			button{
+			margin-bottom: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1 th:text="${appName}"></h1>
+		
+		<button id="sendAjax" type="button" role="button">Mostra edifici</button>
+		<div id="resp"></div>
+		
+		<script>
+			const btn = document.getElementById("sendAjax")
+			const resp = document.getElementById("resp")
+		
+			btn.addEventListener('click', () => {
+				fetch("/edifici")
+					.then(resp => resp.json())
+					.then(edifici => {
+						edifici.forEach((edificio, i) => {
+							resp.innerHTML += `
+								<div class="edificio">
+									ID: ${edificio.id} Nome: ${edificio.nome} Indirizzo:${edificio.indirizzo} Città: ${edificio.citta}
+								</div>
+							`		
+						})
+					})	
+			})
+		</script>
+	</body>
